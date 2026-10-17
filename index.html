@@ -1,0 +1,662 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#eee7ff">
+<title>A Little Birthday Letter 🌙</title>
+
+<style>
+  :root {
+    --night: #29274f;
+    --lavender: #d9ceff;
+    --pink: #ffe0ee;
+    --cream: #fff9ef;
+    --ink: #51456d;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Georgia", "Yu Mincho", serif;
+    color: var(--ink);
+    background:
+      radial-gradient(ellipse at 15% 15%, #fff0f6 0, transparent 38%),
+      radial-gradient(ellipse at 85% 80%, #c7c8ff 0, transparent 40%),
+      linear-gradient(145deg, #f9edff, #e5e4ff 55%, #d7e8ff);
+    overflow-x: hidden;
+  }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .stars {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    color: white;
+    animation: twinkle 2.8s ease-in-out infinite alternate;
+    text-shadow: 0 0 12px white;
+  }
+
+  @keyframes twinkle {
+    from { opacity: .3; transform: scale(.75); }
+    to { opacity: 1; transform: scale(1.15); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-9px); }
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    width: min(100% - 32px, 560px);
+    margin: 0 auto;
+    padding: 48px 0 36px;
+    text-align: center;
+  }
+
+  .moon {
+    font-size: 48px;
+    margin-bottom: 6px;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .eyebrow {
+    font: 11px/1.8 sans-serif;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: #8b7cae;
+  }
+
+  h1 {
+    font-size: clamp(29px, 7vw, 42px);
+    font-weight: normal;
+    margin: 10px 0;
+    color: #55456f;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #887b9e;
+  }
+
+  /* 封面信封 */
+  .envelope-scene {
+    width: min(100%, 360px);
+    height: 255px;
+    margin: 36px auto 20px;
+    display: grid;
+    place-items: center;
+    perspective: 900px;
+  }
+
+  .envelope {
+    position: relative;
+    width: 100%;
+    height: 210px;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    filter: drop-shadow(0 15px 18px #8272a329);
+  }
+
+  .envelope-body {
+    position: absolute;
+    inset: 38px 0 0;
+    background: linear-gradient(145deg, #fff8f4, #f2dff8);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .envelope-body::before,
+  .envelope-body::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+
+  .envelope-body::before {
+    left: 0;
+    border-width: 0 0 172px 180px;
+    border-color: transparent transparent #ead8f3 transparent;
+  }
+
+  .envelope-body::after {
+    right: 0;
+    border-width: 0 0 172px 180px;
+    border-color: transparent transparent #f5e8f8 transparent;
+    transform: scaleX(-1);
+  }
+
+  .letter {
+    position: absolute;
+    z-index: 1;
+    left: 8%;
+    top: 52px;
+    width: 84%;
+    height: 130px;
+    padding: 25px 8px;
+    border-radius: 5px;
+    background: var(--cream);
+    box-shadow: 0 2px 8px #594a7015;
+    transition: transform 1s ease, top 1s ease;
+  }
+
+  .letter span {
+    display: block;
+    font-size: 22px;
+    color: #9b83bd;
+  }
+
+  .letter small {
+    display: block;
+    margin-top: 10px;
+    font-size: 11px;
+    letter-spacing: .15em;
+  }
+
+  .flap {
+    position: absolute;
+    z-index: 3;
+    top: 38px;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 180px solid transparent;
+    border-right: 180px solid transparent;
+    border-top: 118px solid #e4d2f5;
+    transform-origin: top center;
+    transition: transform .7s ease, z-index 0s .35s;
+  }
+
+  .seal {
+    position: absolute;
+    z-index: 4;
+    top: 103px;
+    left: calc(50% - 24px);
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #d9b8e8;
+    color: white;
+    box-shadow: 0 3px 8px #6b54752c;
+    transition: opacity .4s ease;
+    font-size: 23px;
+  }
+
+  .envelope.open .flap {
+    transform: rotateX(180deg);
+    z-index: 0;
+  }
+
+  .envelope.open .letter {
+    top: -5px;
+    transform: translateY(-12px);
+  }
+
+  .envelope.open .seal { opacity: 0; }
+
+  .primary {
+    border: 0;
+    border-radius: 999px;
+    padding: 14px 27px;
+    color: white;
+    background: linear-gradient(100deg, #a891d6, #c59acb);
+    box-shadow: 0 7px 18px #9d85bf35;
+    transition: transform .2s, box-shadow .2s;
+  }
+
+  .primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px #9d85bf45;
+  }
+
+  .primary:focus-visible,
+  .secondary:focus-visible,
+  .star-button:focus-visible {
+    outline: 3px solid #7964a6;
+    outline-offset: 4px;
+  }
+
+  .hint {
+    font: 12px/1.8 sans-serif;
+    color: #9788ac;
+    margin-top: 14px;
+  }
+
+  /* 生日祝福 */
+  .greeting {
+    display: none;
+    animation: appear .9s ease both;
+  }
+
+  .greeting.visible { display: block; }
+
+  @keyframes appear {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .cake {
+    font-size: 67px;
+    margin: 20px 0;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .greeting h2 {
+    font-size: clamp(25px, 6vw, 34px);
+    font-weight: normal;
+    line-height: 1.65;
+    margin: 8px 0 14px;
+  }
+
+  .message {
+    font-size: 15px;
+    line-height: 2.2;
+    white-space: pre-line;
+    color: #756687;
+    padding: 0 6px;
+  }
+
+  .star-button {
+    border: 1px solid #d8c9ee;
+    background: #ffffff78;
+    border-radius: 999px;
+    padding: 12px 20px;
+    margin: 18px 0 6px;
+    color: #75608e;
+  }
+
+  .surprise {
+    min-height: 36px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #9a76ac;
+  }
+
+  .music-control {
+    margin: 8px 0 24px;
+  }
+
+  .secondary {
+    border: 1px solid #d8c9ee;
+    border-radius: 999px;
+    background: #ffffff70;
+    color: #75608e;
+    padding: 10px 16px;
+    margin: 4px;
+  }
+
+  .gifts {
+    margin-top: 32px;
+    padding: 24px 15px;
+    border: 1px solid #ffffffbd;
+    border-radius: 24px;
+    background: #ffffff61;
+    box-shadow: 0 10px 30px #7d6b9d0d;
+  }
+
+  .gifts h3 {
+    font-weight: normal;
+    font-size: 22px;
+    margin: 0 0 8px;
+  }
+
+  .gifts p {
+    font: 12px/1.9 sans-serif;
+    color: #8b7b9f;
+    margin-bottom: 16px;
+  }
+
+  footer {
+    padding: 28px 0 0;
+    color: #a092b5;
+    font: 11px/1.8 sans-serif;
+    letter-spacing: .1em;
+  }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 390px) {
+    .page { padding-top: 30px; }
+    .envelope-scene { transform: scale(.92); margin: 20px auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+</style>
+
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#e8dafa">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="星月生日">
+<link rel="apple-touch-icon" href="./birthday-icon-192.png">
+
+</head>
+
+<body>
+<div class="stars" id="stars" aria-hidden="true"></div>
+
+<main class="page">
+  <div class="moon" aria-hidden="true">☾</div>
+  <div class="eyebrow">A little letter under the moon</div>
+  <h1 id="pageTitle">For You ♡</h1>
+  <p class="subtitle" id="intro">
+    星降る夜に、小さな贈り物を。<br>
+    A little gift, just for you.
+  </p>
+
+  <section id="cover">
+    <div class="envelope-scene">
+      <button class="envelope" id="envelope"
+        aria-label="Open the birthday letter">
+        <div class="envelope-body"></div>
+        <div class="letter">
+          <span>☾ ♡ ✧</span>
+          <small>OPEN YOUR HEART</small>
+        </div>
+        <div class="flap"></div>
+        <div class="seal">✦</div>
+      </button>
+    </div>
+
+    <button class="primary" id="openButton">
+      Open your letter ✉
+    </button>
+    <p class="hint">Tap the envelope to open your surprise</p>
+  </section>
+
+  <section class="greeting" id="greeting" aria-live="polite">
+    <div class="cake" aria-hidden="true">🎂</div>
+    <div class="eyebrow">Today is your special day</div>
+    <h2 id="birthdayTitle">お誕生日おめでとう！</h2>
+
+    <p class="message" id="message">生まれてきてくれてありがとう。
+いつもたくさんの幸せをありがとう。
+
+これからの一年が、
+星のようにきらきら輝く
+素敵な一年になりますように。
+
+遠くから、心を込めて ♡</p>
+
+    <button class="star-button" id="wishButton">
+      ✧ Make a wish ✧
+    </button>
+    <div class="surprise" id="surprise" aria-live="polite"></div>
+
+    <div class="music-control">
+      <button class="secondary" id="musicButton">
+        ♫ Music: not added yet
+      </button>
+    </div>
+
+    <div class="gifts">
+      <div class="moon" aria-hidden="true">🌙</div>
+      <h3>A Little Gift for You</h3>
+      <p>
+        この小さな贈り物が、<br>
+        あなたの毎日に寄り添えますように。
+      </p>
+      <button class="primary" id="phoneDownload">
+        ♡ Download phone wallpaper
+      </button>
+      <button class="secondary" id="desktopDownload">
+        ✧ Download desktop wallpaper
+      </button>
+      <p id="downloadStatus" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <footer>MADE WITH LOVE, UNDER THE SAME SKY ✧</footer>
+</main>
+
+<!-- 音楽を追加するときは、下の JavaScript の MUSIC_FILE を設定します。 -->
+
+<script>
+  /*
+   * ====== カスタマイズ設定 ======
+   * 這裡可以修改朋友名字、祝福內容與音樂檔案。
+   */
+  const FRIEND_NAME = ""; // 例如："さくら"
+  const MUSIC_FILE = "";  // 例如："music.mp3"
+
+  const $ = (id) => document.getElementById(id);
+
+  // 製作背景星星
+  const starContainer = $("stars");
+  for (let i = 0; i < 38; i++) {
+    const star = document.createElement("span");
+    star.className = "star";
+    star.textContent = i % 4 === 0 ? "✦" : "·";
+    star.style.left = Math.random() * 100 + "%";
+    star.style.top = Math.random() * 100 + "%";
+    star.style.fontSize = (10 + Math.random() * 15) + "px";
+    star.style.animationDelay = (Math.random() * 4) + "s";
+    starContainer.appendChild(star);
+  }
+
+  if (FRIEND_NAME.trim()) {
+    $("pageTitle").textContent = "For " + FRIEND_NAME + " ♡";
+    $("birthdayTitle").textContent =
+      "お誕生日おめでとう、" + FRIEND_NAME + "！";
+  }
+
+  // 音樂：沒有選好音檔前先保持靜音
+  const audio = new Audio();
+  audio.loop = true;
+  let musicReady = false;
+
+  if (MUSIC_FILE.trim()) {
+    audio.src = MUSIC_FILE;
+    musicReady = true;
+    $("musicButton").textContent = "♫ Play music";
+  }
+
+  async function toggleMusic() {
+    if (!musicReady) {
+      $("musicButton").textContent = "♫ Add music.mp3 first";
+      $("downloadStatus").textContent =
+        "音樂尚未設定。選好音檔後，就可以加入播放功能。";
+      return;
+    }
+
+    if (audio.paused) {
+      try {
+        await audio.play();
+        $("musicButton").textContent = "♫ Pause music";
+      } catch {
+        $("musicButton").textContent = "♫ Tap to try again";
+      }
+    } else {
+      audio.pause();
+      $("musicButton").textContent = "♫ Play music";
+    }
+  }
+
+  $("musicButton").addEventListener("click", toggleMusic);
+
+  // 開封動畫
+  let opened = false;
+
+  function openLetter() {
+    if (opened) return;
+    opened = true;
+
+    $("envelope").classList.add("open");
+    $("openButton").textContent = "Your letter is opening…";
+
+    // 先讓信封動畫完成，再顯示祝福
+    setTimeout(() => {
+      $("cover").classList.add("hidden");
+      $("intro").classList.add("hidden");
+      $("greeting").classList.add("visible");
+      $("pageTitle").textContent = "Happy Birthday ♡";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 950);
+  }
+
+  $("envelope").addEventListener("click", openLetter);
+  $("openButton").addEventListener("click", openLetter);
+
+  // 每次點星星都送上一句祝福
+  const wishes = [
+    "願你的願望，都能慢慢實現。 ✨",
+    "今年也要遇見好多好多幸福！ ♡",
+    "願你每天都有值得微笑的小事。 ☾",
+    "願幸運的星星一直陪伴著你。 ✧",
+    "遠方也有人真心祝福著你。 ♡"
+  ];
+
+  let wishIndex = 0;
+
+  $("wishButton").addEventListener("click", () => {
+    $("surprise").textContent = wishes[wishIndex % wishes.length];
+    wishIndex++;
+
+    const star = document.createElement("span");
+    star.textContent = " ✦";
+    $("surprise").appendChild(star);
+  });
+
+  // 用 Canvas 產生 PNG 桌布，不需預先準備圖片
+  function makeWallpaper(isPhone) {
+    const canvas = document.createElement("canvas");
+    canvas.width = isPhone ? 1170 : 1920;
+    canvas.height = isPhone ? 2532 : 1080;
+
+    const ctx = canvas.getContext("2d");
+    const w = canvas.width;
+    const h = canvas.height;
+
+    const gradient = ctx.createLinearGradient(0, 0, w, h);
+    gradient.addColorStop(0, "#29274f");
+    gradient.addColorStop(.5, "#716aab");
+    gradient.addColorStop(1, "#e6bfe0");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, w, h);
+
+    // 柔和的月光
+    const glow = ctx.createRadialGradient(
+      w * .5, h * .29, 10, w * .5, h * .29, w * .55
+    );
+    glow.addColorStop(0, "#fff5dc40");
+    glow.addColorStop(1, "#fff5dc00");
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, w, h);
+
+    // 隨機星星
+    for (let i = 0; i < 145; i++) {
+      const x = Math.random() * w;
+      const y = Math.random() * h;
+      const r = 2 + Math.random() * 5;
+
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,250,255,${.25 + Math.random() * .65})`;
+      ctx.fill();
+    }
+
+    // 月亮
+    const mx = w * .5;
+    const my = h * .25;
+    const mr = isPhone ? 100 : 82;
+
+    ctx.beginPath();
+    ctx.arc(mx, my, mr, 0, Math.PI * 2);
+    ctx.fillStyle = "#fff1cf";
+    ctx.shadowColor = "#fff1cf";
+    ctx.shadowBlur = 50;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.beginPath();
+    ctx.arc(mx + mr * .48, my - mr * .28, mr, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalCompositeOperation = "source-over";
+
+    // 文字
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#fff8f4";
+    ctx.shadowColor = "#51426b88";
+    ctx.shadowBlur = 10;
+
+    ctx.font = `${isPhone ? 40 : 38}px Georgia, serif`;
+    ctx.fillText("A LITTLE WISH FOR YOU", w / 2, h * .48);
+
+    ctx.font = `${isPhone ? 58 : 64}px Georgia, serif`;
+    ctx.fillText("お誕生日おめでとう", w / 2, h * .55);
+
+    ctx.font = `${isPhone ? 34 : 32}px Georgia, serif`;
+    ctx.fillText("May your days sparkle ✧", w / 2, h * .60);
+
+    ctx.font = `${isPhone ? 38 : 34}px Georgia, serif`;
+    ctx.fillText(FRIEND_NAME ? `For ${FRIEND_NAME} ♡` : "With love ♡",
+      w / 2, h * .70);
+
+    ctx.shadowBlur = 0;
+    return canvas;
+  }
+
+  function downloadWallpaper(isPhone) {
+    const canvas = makeWallpaper(isPhone);
+    const filename = isPhone
+      ? "moonlight-phone-wallpaper.png"
+      : "moonlight-desktop-wallpaper.png";
+
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        $("downloadStatus").textContent = "圖片產生失敗，請再試一次。";
+        return;
+      }
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      $("downloadStatus").textContent =
+        "桌布已準備下載！下載後可在裝置設定中設為背景。";
+    }, "image/png");
+  }
+
+  $("phoneDownload").addEventListener("click",
+    () => downloadWallpaper(true));
+
+  $("desktopDownload").addEventListener("click",
+    () => downloadWallpaper(false));
+</script>
+</body>
+</html>
