@@ -1,19 +1,22 @@
-
 {
-  "name": "星月生日卡片",
-  "short_name": "星月生日",
+  "id": "./",
+  "name": "星月生日卡",
+  "short_name": "生日卡",
+  "description": "一份充滿星星與月亮的生日祝福",
+  "lang": "zh-TW",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#f8f0ff",
-  "theme_color": "#e8dafa",
+  "background_color": "#fff7fc",
+  "theme_color": "#e9d8ff",
   "icons": [
     {
-      "src": "./birthday-icon-192.png",
+      "src": "./icons/birthday-icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "./birthday-icon-512.png",
+      "src": "./icons/birthday-icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
