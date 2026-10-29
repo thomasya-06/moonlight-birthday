@@ -271,14 +271,6 @@
     margin: 8px 0 14px;
   }
 
-  .message {
-    font-size: 15px;
-    line-height: 2.2;
-    white-space: pre-line;
-    color: #756687;
-    padding: 0 6px;
-  }
-
   .star-button {
     border: 1px solid #d8c9ee;
     background: #ffffff78;
@@ -293,10 +285,6 @@
     font-size: 14px;
     line-height: 1.8;
     color: #9a76ac;
-  }
-
-  .music-control {
-    margin: 8px 0 24px;
   }
 
   .secondary {
@@ -341,6 +329,11 @@
   @media (max-width: 390px) {
     .page { padding-top: 30px; }
     .envelope-scene { transform: scale(.92); margin: 20px auto; }
+    .message {
+      padding: 14px 15px;
+      font-size: 15px;
+      border-radius: 12px;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -351,6 +344,47 @@
       scroll-behavior: auto !important;
     }
   }
+  .download-gift {
+  text-align: center;
+  margin: 36px auto;
+  padding: 24px 16px;
+  max-width: 480px;
+  color: #6f5b83;
+}
+
+.download-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.download-message {
+  line-height: 1.8;
+  margin-bottom: 22px;
+}
+
+.download-button {
+  display: inline-block;
+  padding: 14px 24px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #eadcff, #f8ddeb);
+  color: #59466f;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 5px 18px #bba4d655;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.download-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px #bba4d677;
+}
+
+.download-note {
+  margin-top: 14px;
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
 </style>
 
 <link rel="manifest" href="./manifest.json">
@@ -376,7 +410,7 @@
 <main class="page">
   <div class="moon" aria-hidden="true">☾</div>
   <div class="eyebrow">A little letter under the moon</div>
-  <h1 id="pageTitle">For You ♡</h1>
+  <h1 id="pageTitle">For You ✨</h1>
   <p class="subtitle" id="intro">
     星降る夜に、小さな贈り物を。<br>
     A little gift, just for you.
@@ -384,67 +418,40 @@
 
   <section id="cover">
     <div class="envelope-scene">
-      <button class="envelope" id="envelope"
-        aria-label="Open the birthday letter">
+      <div class="envelope" aria-hidden="true">
         <div class="envelope-body"></div>
         <div class="letter">
           <span>☾ ♡ ✧</span>
-          <small>OPEN YOUR HEART</small>
+          <small>☆OPEN☆</small>
         </div>
         <div class="flap"></div>
         <div class="seal">✦</div>
-      </button>
+      </div>
     </div>
 
-    <button class="primary" id="openButton">
-      Open your letter ✉
-    </button>
-    <p class="hint">Tap the envelope to open your surprise</p>
+    <!-- 網頁版只提供應用程式下載，不開放直接拆信 -->
+    <section class="download-gift" aria-label="Download the birthday app">
+      <p class="download-message">
+        この手紙を、パソコンの中にも残しておけますように。
+      </p>
+      <a
+        class="download-button"
+        href="https://github.com/thomasya-06/moonlight-birthday/releases/latest/download/A.Little.Birthday.Letter.1.0.0.exe"
+      >
+        ✨ Windows 版をダウンロード
+      </a>
+      <p class="download-note">Windows 用・オフライン版</p>
+    </section>
   </section>
 
   <section class="greeting" id="greeting" aria-live="polite">
     <div class="cake" aria-hidden="true">🎂</div>
     <div class="eyebrow">Today is your special day</div>
     <h2 id="birthdayTitle">お誕生日おめでとう！</h2>
-
-    <p class="message" id="message">生まれてきてくれてありがとう。
-いつもたくさんの幸せをありがとう。
-
-これからの一年が、
-星のようにきらきら輝く
-素敵な一年になりますように。
-
-遠くから、心を込めて ♡</p>
-
-    <button class="star-button" id="wishButton">
-      ✧ Make a wish ✧
-    </button>
     <div class="surprise" id="surprise" aria-live="polite"></div>
-
-    <div class="music-control">
-      <button class="secondary" id="musicButton">
-        ♫ Music: not added yet
-      </button>
-    </div>
-
-    <div class="gifts">
-      <div class="moon" aria-hidden="true">🌙</div>
-      <h3>A Little Gift for You</h3>
-      <p>
-        この小さな贈り物が、<br>
-        あなたの毎日に寄り添えますように。
-      </p>
-      <button class="primary" id="phoneDownload">
-        ♡ Download phone wallpaper
-      </button>
-      <button class="secondary" id="desktopDownload">
-        ✧ Download desktop wallpaper
-      </button>
-      <p id="downloadStatus" aria-live="polite"></p>
-    </div>
   </section>
 
-  <footer>MADE WITH LOVE, UNDER THE SAME SKY ✧</footer>
+  <footer>MESSAGE FOR YOU, UNDER THE SAME SKY ✧</footer>
 </main>
 
 <!-- 音楽を追加するときは、下の JavaScript の MUSIC_FILE を設定します。 -->
@@ -473,199 +480,12 @@
   }
 
   if (FRIEND_NAME.trim()) {
-    $("pageTitle").textContent = "For " + FRIEND_NAME + " ♡";
+    $("pageTitle").textContent = "For " + FRIEND_NAME + " ☆";
     $("birthdayTitle").textContent =
-      "お誕生日おめでとう、" + FRIEND_NAME + "！";
+      "お誕生日おめでとう！";
   }
 
-  // 音樂：沒有選好音檔前先保持靜音
-  const audio = new Audio();
-  audio.loop = true;
-  let musicReady = false;
+  // 網頁版刻意不提供開信功能；完整互動只在桌面應用程式中使用。
 
-  if (MUSIC_FILE.trim()) {
-    audio.src = MUSIC_FILE;
-    musicReady = true;
-    $("musicButton").textContent = "♫ Play music";
-  }
-
-  async function toggleMusic() {
-    if (!musicReady) {
-      $("musicButton").textContent = "♫ Add music.mp3 first";
-      $("downloadStatus").textContent =
-        "音樂尚未設定。選好音檔後，就可以加入播放功能。";
-      return;
-    }
-
-    if (audio.paused) {
-      try {
-        await audio.play();
-        $("musicButton").textContent = "♫ Pause music";
-      } catch {
-        $("musicButton").textContent = "♫ Tap to try again";
-      }
-    } else {
-      audio.pause();
-      $("musicButton").textContent = "♫ Play music";
-    }
-  }
-
-  $("musicButton").addEventListener("click", toggleMusic);
-
-  // 開封動畫
-  let opened = false;
-
-  function openLetter() {
-    if (opened) return;
-    opened = true;
-
-    $("envelope").classList.add("open");
-    $("openButton").textContent = "Your letter is opening…";
-
-    // 先讓信封動畫完成，再顯示祝福
-    setTimeout(() => {
-      $("cover").classList.add("hidden");
-      $("intro").classList.add("hidden");
-      $("greeting").classList.add("visible");
-      $("pageTitle").textContent = "Happy Birthday ♡";
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 950);
-  }
-
-  $("envelope").addEventListener("click", openLetter);
-  $("openButton").addEventListener("click", openLetter);
-
-  // 每次點星星都送上一句祝福
-  const wishes = [
-    "願你的願望，都能慢慢實現。 ✨",
-    "今年也要遇見好多好多幸福！ ♡",
-    "願你每天都有值得微笑的小事。 ☾",
-    "願幸運的星星一直陪伴著你。 ✧",
-    "遠方也有人真心祝福著你。 ♡"
-  ];
-
-  let wishIndex = 0;
-
-  $("wishButton").addEventListener("click", () => {
-    $("surprise").textContent = wishes[wishIndex % wishes.length];
-    wishIndex++;
-
-    const star = document.createElement("span");
-    star.textContent = " ✦";
-    $("surprise").appendChild(star);
-  });
-
-  // 用 Canvas 產生 PNG 桌布，不需預先準備圖片
-  function makeWallpaper(isPhone) {
-    const canvas = document.createElement("canvas");
-    canvas.width = isPhone ? 1170 : 1920;
-    canvas.height = isPhone ? 2532 : 1080;
-
-    const ctx = canvas.getContext("2d");
-    const w = canvas.width;
-    const h = canvas.height;
-
-    const gradient = ctx.createLinearGradient(0, 0, w, h);
-    gradient.addColorStop(0, "#29274f");
-    gradient.addColorStop(.5, "#716aab");
-    gradient.addColorStop(1, "#e6bfe0");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, w, h);
-
-    // 柔和的月光
-    const glow = ctx.createRadialGradient(
-      w * .5, h * .29, 10, w * .5, h * .29, w * .55
-    );
-    glow.addColorStop(0, "#fff5dc40");
-    glow.addColorStop(1, "#fff5dc00");
-    ctx.fillStyle = glow;
-    ctx.fillRect(0, 0, w, h);
-
-    // 隨機星星
-    for (let i = 0; i < 145; i++) {
-      const x = Math.random() * w;
-      const y = Math.random() * h;
-      const r = 2 + Math.random() * 5;
-
-      ctx.beginPath();
-      ctx.arc(x, y, r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,250,255,${.25 + Math.random() * .65})`;
-      ctx.fill();
-    }
-
-    // 月亮
-    const mx = w * .5;
-    const my = h * .25;
-    const mr = isPhone ? 100 : 82;
-
-    ctx.beginPath();
-    ctx.arc(mx, my, mr, 0, Math.PI * 2);
-    ctx.fillStyle = "#fff1cf";
-    ctx.shadowColor = "#fff1cf";
-    ctx.shadowBlur = 50;
-    ctx.fill();
-    ctx.shadowBlur = 0;
-
-    ctx.globalCompositeOperation = "destination-out";
-    ctx.beginPath();
-    ctx.arc(mx + mr * .48, my - mr * .28, mr, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.globalCompositeOperation = "source-over";
-
-    // 文字
-    ctx.textAlign = "center";
-    ctx.fillStyle = "#fff8f4";
-    ctx.shadowColor = "#51426b88";
-    ctx.shadowBlur = 10;
-
-    ctx.font = `${isPhone ? 40 : 38}px Georgia, serif`;
-    ctx.fillText("A LITTLE WISH FOR YOU", w / 2, h * .48);
-
-    ctx.font = `${isPhone ? 58 : 64}px Georgia, serif`;
-    ctx.fillText("お誕生日おめでとう", w / 2, h * .55);
-
-    ctx.font = `${isPhone ? 34 : 32}px Georgia, serif`;
-    ctx.fillText("May your days sparkle ✧", w / 2, h * .60);
-
-    ctx.font = `${isPhone ? 38 : 34}px Georgia, serif`;
-    ctx.fillText(FRIEND_NAME ? `For ${FRIEND_NAME} ♡` : "With love ♡",
-      w / 2, h * .70);
-
-    ctx.shadowBlur = 0;
-    return canvas;
-  }
-
-  function downloadWallpaper(isPhone) {
-    const canvas = makeWallpaper(isPhone);
-    const filename = isPhone
-      ? "moonlight-phone-wallpaper.png"
-      : "moonlight-desktop-wallpaper.png";
-
-    canvas.toBlob((blob) => {
-      if (!blob) {
-        $("downloadStatus").textContent = "圖片產生失敗，請再試一次。";
-        return;
-      }
-
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-      $("downloadStatus").textContent =
-        "桌布已準備下載！下載後可在裝置設定中設為背景。";
-    }, "image/png");
-  }
-
-  $("phoneDownload").addEventListener("click",
-    () => downloadWallpaper(true));
-
-  $("desktopDownload").addEventListener("click",
-    () => downloadWallpaper(false));
 </script>
-</body>
 </html>
